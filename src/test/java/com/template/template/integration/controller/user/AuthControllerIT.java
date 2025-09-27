@@ -23,7 +23,7 @@ import com.template.template.dto.user.RegisterUserRequestDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerIT {
+public class AuthControllerIT {
 
   @Autowired
   private MockMvc mockMvc;
@@ -32,34 +32,37 @@ public class UserControllerIT {
   private ObjectMapper objectMapper;
 
   @MockitoBean
-  private UserDao userJpa;
+  private UserDao userDao;
 
   @Test
   public void registerUserWithValidRequest() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456", "Pochita", "Test");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("Pochita", "Test", "pochita@test.com", "123456");
     UserModel userModel = UserModel.builder()
         .id(1L)
+        .firstName("Pochita")
+        .lastName("Test")
         .email("pochita@test.com")
         .role("USER")
         .password("123456")
         .build();
-    when(userJpa.save(any(UserModel.class))).thenReturn(userModel);
-    mockMvc.perform(post("/user")
+    when(userDao.save(any(UserModel.class))).thenReturn(userModel);
+    mockMvc.perform(post("/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isCreated())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.id").value(1L))
-        .andExpect(jsonPath("$.email").value("pochita@test.com"))
-        .andExpect(jsonPath("$.firstName").value("Pochita"))
-        .andExpect(jsonPath("$.lastName").value("Test"))
-        .andExpect(jsonPath("$.role").value("USER"));
+        .andExpect(jsonPath("$.token").isNotEmpty())
+        .andExpect(jsonPath("$.user.id").value(1L))
+        .andExpect(jsonPath("$.user.email").value("pochita@test.com"))
+        .andExpect(jsonPath("$.user.firstName").value("Pochita"))
+        .andExpect(jsonPath("$.user.lastName").value("Test"))
+        .andExpect(jsonPath("$.user.role").value("USER"));
   }
 
   @Test
   public void registerUserWithInvalidEmail() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita", "123456", "Pochita", "Test");
-    mockMvc.perform(post("/user")
+    RegisterUserRequestDto request = new RegisterUserRequestDto("Pochita", "Test", "pochita", "123456");
+    mockMvc.perform(post("/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
@@ -67,8 +70,8 @@ public class UserControllerIT {
 
   @Test
   public void registerUserWithInvalidPassword() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123", "Pochita", "Test");
-    mockMvc.perform(post("/user")
+    RegisterUserRequestDto request = new RegisterUserRequestDto("Pochita", "Test", "pochita@test.com", "123");
+    mockMvc.perform(post("/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
@@ -76,12 +79,12 @@ public class UserControllerIT {
 
   @Test
   void registerUserUnexpectedDatabaseError() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456", "Pochita", "Test");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("Pochita", "Test", "pochita@test.com", "123456");
 
-    when(userJpa.save(any(UserModel.class)))
+    when(userDao.save(any(UserModel.class)))
         .thenThrow(new DataAccessResourceFailureException("Unexpected database error"));
 
-    mockMvc.perform(post("/user")
+    mockMvc.perform(post("/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isInternalServerError())
