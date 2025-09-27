@@ -8,4 +8,5 @@ import com.template.template.data.mysql.model.UserModel;
 
 public interface UserDao extends JpaRepository<UserModel, Long> {
   Optional<UserModel> findByEmailAndActiveTrue(String email);
+  boolean existsByEmail(String email);
 }

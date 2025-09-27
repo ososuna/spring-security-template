@@ -31,4 +31,9 @@ public class UserRepository implements IUserRepository {
     return userMapper.toUserEntity(userModel);
   }
 
+  @Override
+  public boolean existsByEmail(String email) {
+    return userJpa.existsByEmail(email);
+  }
+
 }

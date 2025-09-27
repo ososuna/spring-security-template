@@ -7,10 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class RegisterUserResponseDto {
-  private Long id;
-  private String name;
-  private String lastName;
-  private String email;
-  private String role;
+public class UserTokenResponseDto {
+  private String token;
+  private LoggedUserDto user;
 }

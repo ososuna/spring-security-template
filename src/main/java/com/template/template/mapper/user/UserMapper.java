@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.template.template.data.mysql.model.UserModel;
 import com.template.template.dto.user.RegisterUserDto;
-import com.template.template.dto.user.RegisterUserResponseDto;
+import com.template.template.dto.user.LoggedUserDto;
 import com.template.template.entity.UserEntity;
 
 @Component
@@ -30,8 +30,8 @@ public class UserMapper implements IUserMapper<UserModel> {
   }
 
   @Override
-  public RegisterUserResponseDto toRegisterUserDto(UserEntity entity) {
-    return RegisterUserResponseDto.builder()
+  public LoggedUserDto toLoggedUserDto(UserEntity entity) {
+    return LoggedUserDto.builder()
         .id(entity.getId())
         .email(entity.getEmail())
         .name(entity.getName())

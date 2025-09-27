@@ -1,9 +1,12 @@
 package com.template.template.service.user;
 
+import com.template.template.dto.user.LoginUserRequestDto;
 import com.template.template.dto.user.RegisterUserRequestDto;
-import com.template.template.dto.user.RegisterUserResponseDto;
+import com.template.template.dto.user.UserTokenResponseDto;
 import com.template.template.exception.BadRequestException;
+import com.template.template.exception.NotFoundException;
 
 public interface IUserService {
-  RegisterUserResponseDto register(RegisterUserRequestDto createUserRequestDto) throws BadRequestException;
+  UserTokenResponseDto register(RegisterUserRequestDto registerUserRequestDto) throws BadRequestException;
+  UserTokenResponseDto login(LoginUserRequestDto loginUserRequestDto) throws BadRequestException, NotFoundException;
 }

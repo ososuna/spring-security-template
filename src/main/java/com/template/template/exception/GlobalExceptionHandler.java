@@ -12,6 +12,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<Map<String, String>> handleNotFoundException(NotFoundException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "Not Found");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+  }
+
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "Bad Request");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
+
   @ExceptionHandler(org.springframework.dao.DataAccessException.class)
   public ResponseEntity<Map<String, String>> handleDatabaseError(DataAccessException ex) {
     Map<String, String> body = new HashMap<>();
