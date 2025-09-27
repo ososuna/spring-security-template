@@ -5,6 +5,7 @@ import com.template.template.validators.EmailValidator;
 
 import lombok.Data;
 
+
 @Data
 public class RegisterUserDto {
   private String firstName;
@@ -21,10 +22,47 @@ public class RegisterUserDto {
     this.role = role;
   }
 
-  public static RegisterUserDto createWithEmailAndPassword(String firstName, String lastName, String email, String password) throws BadRequestException {
-    validateEmail(email);
-    validatePassword(password);
-    return new RegisterUserDto(firstName, lastName, email, password, "USER");
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public static class Builder {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String role = "USER";
+
+    public Builder firstName(String firstName) {
+      this.firstName = firstName;
+      return this;
+    }
+
+    public Builder lastName(String lastName) {
+      this.lastName = lastName;
+      return this;
+    }
+
+    public Builder email(String email) {
+      this.email = email;
+      return this;
+    }
+
+    public Builder password(String password) {
+      this.password = password;
+      return this;
+    }
+
+    public Builder role(String role) {
+      this.role = role;
+      return this;
+    }
+
+    public RegisterUserDto build() throws BadRequestException {
+      validateEmail(email);
+      validatePassword(password);
+      return new RegisterUserDto(firstName, lastName, email, password, role);
+    }
   }
 
   private static void validateEmail(String email) throws BadRequestException {
