@@ -37,6 +37,10 @@ server:
   error:
     include-message: always
 
+jwt:
+  secret: ${JWT_SECRET:replace_with_a_very_long_random_secret_key_1234567890}
+  expiration: ${JWT_EXPIRATION:3600000}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
