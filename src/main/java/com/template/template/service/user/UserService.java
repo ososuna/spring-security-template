@@ -1,5 +1,7 @@
 package com.template.template.service.user;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +63,14 @@ public class UserService implements IUserService {
         .user(loggedUser)
         .token(token)
         .build();
+  }
+
+  @Override
+  public LoggedUserDto getUser() throws NotFoundException {
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    String userEmail = userDetails.getUsername();
+    UserEntity user = userRepository.findByEmail(userEmail);
+    return userMapper.toLoggedUserDto(user);
   }
 
 }

@@ -31,9 +31,22 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**").permitAll()
             .requestMatchers("/v3/api-docs/**").permitAll() 
             .requestMatchers("/api-docs/**").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
+            .requestMatchers("/webjars/**").permitAll()
             .anyRequest().authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling(exceptions -> exceptions
+            .authenticationEntryPoint((request, response, authException) -> {
+              response.setStatus(401);
+              response.setContentType("application/json");
+              response.getWriter().write("{\"error\":\"Unauthorized\",\"message\":\"Authentication required\"}");
+            })
+            .accessDeniedHandler((request, response, accessDeniedException) -> {
+              response.setStatus(403);
+              response.setContentType("application/json");
+              response.getWriter().write("{\"error\":\"Forbidden\",\"message\":\"Access denied\"}");
+            }))
         .build();
   }
 
