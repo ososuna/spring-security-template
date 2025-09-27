@@ -17,7 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.template.template.data.mysql.jpa.UserJpa;
+import com.template.template.data.mysql.dao.UserDao;
 import com.template.template.data.mysql.model.UserModel;
 import com.template.template.dto.user.RegisterUserRequestDto;
 
@@ -32,7 +32,7 @@ public class UserControllerIT {
   private ObjectMapper objectMapper;
 
   @MockitoBean
-  private UserJpa userJpa;
+  private UserDao userJpa;
 
   @Test
   public void registerUserWithValidRequest() throws Exception {

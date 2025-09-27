@@ -2,7 +2,7 @@ package com.template.template.repository.user;
 
 import org.springframework.stereotype.Repository;
 
-import com.template.template.data.mysql.jpa.UserJpa;
+import com.template.template.data.mysql.dao.UserDao;
 import com.template.template.data.mysql.model.UserModel;
 import com.template.template.dto.user.RegisterUserDto;
 import com.template.template.entity.UserEntity;
@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserRepository implements IUserRepository {
 
-  private final UserJpa userJpa;
+  private final UserDao userJpa;
   private final IUserMapper<UserModel> userMapper;
 
   @Override
