@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: template
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/template}
+    username: ${DATASOURCE_USERNAME:template}
+    password: ${DATASOURCE_PASSWORD:123456}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      initialization-fail-timeout: 60000
+      connection-timeout: 60000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO:update}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        temp:
+          use-jdbc-metadata: false
+        '[ddl_auto]': ${DDL_AUTO:update}
+        '[globally_quoted_identifiers]': true
+    show-sql: false
+  sql:
+    init:
+      platform: mysql
+
+server:
+  port: ${APP_PORT:8080}
+  servlet:
+    context-path: /api/v1
+  error:
+    include-message: always
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:mysql://db:3306/template?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: template
+    password: 123456

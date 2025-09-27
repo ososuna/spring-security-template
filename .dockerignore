@@ -1,0 +1,55 @@
+# Maven build artifacts
+target/
+!target/*.jar
+*.war
+*.ear
+*.nar
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Maven wrapper (if you want to exclude it)
+.mvn/
+mvnw
+mvnw.cmd
+
+# Test results
+test-results/
+coverage/
+
+# Environment files (security)
+.env
+*.env
+
+# Database files
+*.db
+*.sqlite

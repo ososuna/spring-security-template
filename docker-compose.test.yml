@@ -1,0 +1,37 @@
+services:
+  app-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder   # Use the builder stage (Maven + source code)
+    container_name: spring-boot-tests
+    command: mvn test   # Run tests instead of building the JAR
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - .:/app          # Mount local code so tests run on latest changes
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: template
+      MYSQL_USER: template
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "template", "-p123456"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 30s
+
+volumes:
+  db_data:
