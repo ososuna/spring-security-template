@@ -1,35 +1,43 @@
 package com.template.template.mapper.user;
 
+import org.springframework.stereotype.Component;
+
 import com.template.template.data.mysql.model.UserModel;
 import com.template.template.dto.user.RegisterUserDto;
 import com.template.template.dto.user.RegisterUserResponseDto;
 import com.template.template.entity.UserEntity;
 
-public class UserMapper {
-  public static UserModel userMySqlModelFromRegisterUserDto(RegisterUserDto registerUserDto) {
+@Component
+public class UserMapper implements IUserMapper<UserModel> {
+
+  @Override
+  public UserModel toUserModel(RegisterUserDto dto) {
     return UserModel.builder()
-      .email(registerUserDto.getEmail())
-      .password(registerUserDto.getPassword())
-      .role(registerUserDto.getRole())
-      .build();
+        .email(dto.getEmail())
+        .password(dto.getPassword())
+        .role(dto.getRole())
+        .build();
   }
 
-  public static UserEntity userEntityFromMySqlModel(UserModel userModel) {
+  @Override
+  public UserEntity toUserEntity(UserModel model) {
     return UserEntity.builder()
-      .email(userModel.getEmail())
-      .password(userModel.getPassword())
-      .role(userModel.getRole())
-      .id(userModel.getId())
-      .build();
+        .email(model.getEmail())
+        .password(model.getPassword())
+        .role(model.getRole())
+        .id(model.getId())
+        .build();
   }
 
-  public static RegisterUserResponseDto registerUserResponseDtoFromEntity(UserEntity userEntity) {
+  @Override
+  public RegisterUserResponseDto toRegisterUserDto(UserEntity entity) {
     return RegisterUserResponseDto.builder()
-      .id(userEntity.getId())
-      .email(userEntity.getEmail())
-      .name(userEntity.getName())
-      .lastName(userEntity.getLastName())
-      .role(userEntity.getRole())
-      .build();
+        .id(entity.getId())
+        .email(entity.getEmail())
+        .name(entity.getName())
+        .lastName(entity.getLastName())
+        .role(entity.getRole())
+        .build();
   }
+
 }
