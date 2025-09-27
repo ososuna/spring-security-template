@@ -7,20 +7,24 @@ import lombok.Data;
 
 @Data
 public class RegisterUserDto {
+  private String firstName;
+  private String lastName;
   private String email;
   private String password;
   private String role;
 
-  private RegisterUserDto(String email, String password, String role) {
+  private RegisterUserDto(String firstName, String lastName, String email, String password, String role) {
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.email = email;
     this.password = password;
     this.role = role;
   }
 
-  public static RegisterUserDto createWithUserAndPassword(String email, String password) throws BadRequestException {
+  public static RegisterUserDto createWithEmailAndPassword(String firstName, String lastName, String email, String password) throws BadRequestException {
     validateEmail(email);
     validatePassword(password);
-    return new RegisterUserDto(email, password, "USER");
+    return new RegisterUserDto(firstName, lastName, email, password, "USER");
   }
 
   private static void validateEmail(String email) throws BadRequestException {

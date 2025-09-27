@@ -29,8 +29,8 @@ public class UserService implements IUserService {
 
   @Override
   public UserTokenResponseDto register(RegisterUserRequestDto createUserRequestDto) throws BadRequestException {
-    RegisterUserDto registerUserDto = RegisterUserDto.createWithUserAndPassword(createUserRequestDto.getEmail(),
-        createUserRequestDto.getPassword());
+    RegisterUserDto registerUserDto = RegisterUserDto.createWithEmailAndPassword(createUserRequestDto.getFirstName(),
+        createUserRequestDto.getLastName(), createUserRequestDto.getEmail(), createUserRequestDto.getPassword());
     if (userRepository.existsByEmail(registerUserDto.getEmail())) {
       throw new BadRequestException("Invalid email");
     }

@@ -13,6 +13,8 @@ public class UserMapper implements IUserMapper<UserModel> {
   @Override
   public UserModel toUserModel(RegisterUserDto dto) {
     return UserModel.builder()
+        .firstName(dto.getFirstName())
+        .lastName(dto.getLastName())
         .email(dto.getEmail())
         .password(dto.getPassword())
         .role(dto.getRole())
@@ -22,6 +24,8 @@ public class UserMapper implements IUserMapper<UserModel> {
   @Override
   public UserEntity toUserEntity(UserModel model) {
     return UserEntity.builder()
+        .firstName(model.getFirstName())
+        .lastName(model.getLastName())
         .email(model.getEmail())
         .password(model.getPassword())
         .role(model.getRole())
@@ -33,9 +37,9 @@ public class UserMapper implements IUserMapper<UserModel> {
   public LoggedUserDto toLoggedUserDto(UserEntity entity) {
     return LoggedUserDto.builder()
         .id(entity.getId())
-        .email(entity.getEmail())
-        .name(entity.getName())
+        .firstName(entity.getFirstName())
         .lastName(entity.getLastName())
+        .email(entity.getEmail())
         .role(entity.getRole())
         .build();
   }

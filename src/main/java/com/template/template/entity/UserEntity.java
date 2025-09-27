@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserEntity implements UserDetails {
   private Long id;
-  private String name;
+  private String firstName;
   private String lastName;
   private String email;
   private String role;

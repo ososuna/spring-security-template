@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoggedUserDto {
   private Long id;
-  private String name;
+  private String firstName;
   private String lastName;
   private String email;
   private String role;

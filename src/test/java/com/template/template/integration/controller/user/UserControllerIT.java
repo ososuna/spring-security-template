@@ -36,7 +36,7 @@ public class UserControllerIT {
 
   @Test
   public void registerUserWithValidRequest() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456", "Pochita", "Test");
     UserModel userModel = UserModel.builder()
         .id(1L)
         .email("pochita@test.com")
@@ -51,12 +51,14 @@ public class UserControllerIT {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.id").value(1L))
         .andExpect(jsonPath("$.email").value("pochita@test.com"))
+        .andExpect(jsonPath("$.firstName").value("Pochita"))
+        .andExpect(jsonPath("$.lastName").value("Test"))
         .andExpect(jsonPath("$.role").value("USER"));
   }
 
   @Test
   public void registerUserWithInvalidEmail() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita", "123456");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita", "123456", "Pochita", "Test");
     mockMvc.perform(post("/user")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
@@ -65,7 +67,7 @@ public class UserControllerIT {
 
   @Test
   public void registerUserWithInvalidPassword() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123", "Pochita", "Test");
     mockMvc.perform(post("/user")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(request)))
@@ -74,7 +76,7 @@ public class UserControllerIT {
 
   @Test
   void registerUserUnexpectedDatabaseError() throws Exception {
-    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456");
+    RegisterUserRequestDto request = new RegisterUserRequestDto("pochita@test.com", "123456", "Pochita", "Test");
 
     when(userJpa.save(any(UserModel.class)))
         .thenThrow(new DataAccessResourceFailureException("Unexpected database error"));
