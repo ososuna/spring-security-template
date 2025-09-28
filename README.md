@@ -36,7 +36,7 @@ A production-ready **Spring Boot 3.5.6** template with **JWT authentication** us
 ### Option 1: Running with Docker (Recommended)
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/ososuna/spring-security-template.git
 cd spring-security-template
 
 chmod +x up-dev.sh
